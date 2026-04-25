@@ -1,0 +1,29 @@
+server:
+  port: 8084
+
+spring:
+  application:
+    name: store-cart-service
+
+  datasource:
+    url: jdbc:mysql://localhost:3306/store_api?createDatabaseIfNotExist=true
+    username: root
+    password: Start#123
+
+  jpa:
+    show-sql: false
+    hibernate:
+      ddl-auto: none
+
+  flyway:
+    table: flyway_schema_history_cart
+    baseline-on-migrate: true
+
+# URL for the product-service (used by ProductClient)
+services:
+  product:
+    url: http://localhost:8083
+
+logging:
+  level:
+    com.codewithmosh.store.cart: DEBUG

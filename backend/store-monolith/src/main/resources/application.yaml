@@ -1,0 +1,18 @@
+spring:
+  application:
+    name: store
+  jwt:
+    secret: ${JWT_SECRET}
+    accessTockenExpiration: 7200 #5m 
+    refreshTockenExpiration: 604800 #7d
+  profiles:
+    active: dev
+stripe:
+    secretKey: ${STRIPE_KEY}
+
+websiteUrl: http://localhost:3000/
+
+webhookSecretKey: ${WEBHOOK_SECRET_KEY}
+    
+
+

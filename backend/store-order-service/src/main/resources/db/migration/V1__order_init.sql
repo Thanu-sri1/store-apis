@@ -1,0 +1,18 @@
+CREATE TABLE IF NOT EXISTS orders (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    customerId BIGINT NOT NULL,
+    status VARCHAR(20) NOT NULL,
+    createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    totalPrice DECIMAL(10, 2) NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS order_items (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    orderId BIGINT NOT NULL,
+    productId BIGINT NOT NULL,
+    product_name VARCHAR(255),
+    unit_price DECIMAL(10, 2) NOT NULL,
+    quantity INT NOT NULL,
+    total_price DECIMAL(10, 2) NOT NULL,
+    FOREIGN KEY (orderId) REFERENCES orders(id) ON DELETE CASCADE
+);

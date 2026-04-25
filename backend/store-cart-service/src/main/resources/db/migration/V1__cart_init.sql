@@ -1,0 +1,13 @@
+CREATE TABLE IF NOT EXISTS carts (
+    id BINARY(16) PRIMARY KEY,
+    date_created TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS cart_items (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    cart_id BINARY(16),
+    product_id BIGINT NOT NULL,
+    unit_price DECIMAL(10, 2) NOT NULL,
+    quantity INT NOT NULL,
+    FOREIGN KEY (cart_id) REFERENCES carts(id) ON DELETE CASCADE
+);

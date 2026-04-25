@@ -1,0 +1,24 @@
+server:
+  port: 8083
+
+spring:
+  application:
+    name: store-product-service
+
+  datasource:
+    url: jdbc:mysql://localhost:3306/store_api?createDatabaseIfNotExist=true
+    username: root
+    password: Start#123
+
+  jpa:
+    show-sql: false
+    hibernate:
+      ddl-auto: none
+
+  flyway:
+    table: flyway_schema_history_product
+    baseline-on-migrate: true
+
+logging:
+  level:
+    com.codewithmosh.store.product: DEBUG

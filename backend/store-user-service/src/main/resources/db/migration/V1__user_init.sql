@@ -1,0 +1,26 @@
+CREATE TABLE IF NOT EXISTS users (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    email VARCHAR(255) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL,
+    role VARCHAR(20) NOT NULL DEFAULT 'USER'
+);
+
+CREATE TABLE IF NOT EXISTS addresses (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    street VARCHAR(255) NOT NULL,
+    city VARCHAR(255) NOT NULL,
+    state VARCHAR(255) NOT NULL,
+    zip VARCHAR(255) NOT NULL,
+    user_id BIGINT NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES users(id)
+);
+
+CREATE TABLE IF NOT EXISTS profiles (
+    id BIGINT PRIMARY KEY,
+    bio TEXT,
+    phone_number VARCHAR(15),
+    date_of_birth DATE,
+    loyalty_points INT UNSIGNED DEFAULT 0,
+    FOREIGN KEY (id) REFERENCES users(id)
+);

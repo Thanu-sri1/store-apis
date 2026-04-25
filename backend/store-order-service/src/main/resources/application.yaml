@@ -1,0 +1,37 @@
+server:
+  port: 8085
+
+spring:
+  application:
+    name: store-order-service
+
+  datasource:
+    url: jdbc:mysql://localhost:3306/store_api?createDatabaseIfNotExist=true
+    username: root
+    password: Start#123
+
+  jpa:
+    show-sql: false
+    hibernate:
+      ddl-auto: none
+
+  flyway:
+    table: flyway_schema_history_order
+    baseline-on-migrate: true
+
+stripe:
+  secretKey: ${STRIPE_KEY:sk_test_placeholder}
+
+websiteUrl: http://localhost:3000/
+webhookSecretKey: ${WEBHOOK_SECRET_KEY:whsec_placeholder}
+
+# URLs for other services
+services:
+  cart:
+    url: http://localhost:8084
+  product:
+    url: http://localhost:8083
+
+logging:
+  level:
+    com.codewithmosh.store.order: DEBUG

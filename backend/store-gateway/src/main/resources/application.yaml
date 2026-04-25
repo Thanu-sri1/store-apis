@@ -1,0 +1,74 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: store-gateway
+
+  jwt:
+    secret: ${JWT_SECRET}
+    accessTockenExpiration: 7200
+    refreshTockenExpiration: 604800
+
+  cloud:
+    gateway:
+      globalcors:
+        cors-configurations:
+          '[/**]':
+            allowedOrigins: "http://localhost:3000"
+            allowedMethods:
+              - GET
+              - POST
+              - PUT
+              - DELETE
+              - OPTIONS
+            allowedHeaders: "*"
+            allowCredentials: true
+      routes:
+
+        # Auth Service — /login/**
+        - id: auth-service
+          uri: http://localhost:8081
+          predicates:
+            - Path=/login, /login/**
+
+        # User Service — /users/**
+        - id: user-service
+          uri: http://localhost:8082
+          predicates:
+            - Path=/users, /users/**
+
+        # Product Service — /products/**
+        - id: product-service
+          uri: http://localhost:8083
+          predicates:
+            - Path=/products, /products/**
+
+        # Cart Service — /cart/**
+        - id: cart-service
+          uri: http://localhost:8084
+          predicates:
+            - Path=/cart, /cart/**
+
+        # Order Service — /orders/**
+        - id: order-service-orders
+          uri: http://localhost:8085
+          predicates:
+            - Path=/orders, /orders/**
+
+        # Order Service — /checkout/**
+        - id: order-service-checkout
+          uri: http://localhost:8085
+          predicates:
+            - Path=/checkout, /checkout/**
+
+        # Admin
+        - id: admin-service
+          uri: http://localhost:8082
+          predicates:
+            - Path=/admin/**
+
+logging:
+  level:
+    com.codewithmosh.store.gateway: DEBUG
+    org.springframework.cloud.gateway: INFO

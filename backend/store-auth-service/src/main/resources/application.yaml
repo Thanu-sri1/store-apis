@@ -1,0 +1,25 @@
+server:
+  port: 8081
+
+spring:
+  application:
+    name: store-auth-service
+
+  datasource:
+    url: jdbc:mysql://localhost:3306/store_api?createDatabaseIfNotExist=true
+    username: root
+    password: Start#123
+
+  jpa:
+    show-sql: false
+    hibernate:
+      ddl-auto: none   # Auth service does NOT manage schema
+
+  jwt:
+    secret: ${JWT_SECRET}
+    accessTockenExpiration: 7200
+    refreshTockenExpiration: 604800
+
+logging:
+  level:
+    com.codewithmosh.store.auth: DEBUG

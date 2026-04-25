@@ -1,0 +1,90 @@
+version: '3.8'
+
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: store-mysql
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_DATABASE: store_api
+      MYSQL_ROOT_PASSWORD: Start#123
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+  store-gateway:
+    build: ./backend/store-gateway
+    ports:
+      - "8080:8080"
+    environment:
+      - JWT_SECRET=YourSuperSecretKeyForJWTSigningThatIsAtLeast32CharsLong
+    depends_on:
+      - store-auth-service
+      - store-user-service
+
+  store-auth-service:
+    build: ./backend/store-auth-service
+    ports:
+      - "8081:8081"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/store_api
+      - SPRING_DATASOURCE_PASSWORD=Start#123
+      - JWT_SECRET=YourSuperSecretKeyForJWTSigningThatIsAtLeast32CharsLong
+    depends_on:
+      - mysql
+
+  store-user-service:
+    build: ./backend/store-user-service
+    ports:
+      - "8082:8082"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/store_api
+      - SPRING_DATASOURCE_PASSWORD=Start#123
+    depends_on:
+      - mysql
+
+  store-product-service:
+    build: ./backend/store-product-service
+    ports:
+      - "8083:8083"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/store_api
+      - SPRING_DATASOURCE_PASSWORD=Start#123
+    depends_on:
+      - mysql
+
+  store-cart-service:
+    build: ./backend/store-cart-service
+    ports:
+      - "8084:8084"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/store_api
+      - SPRING_DATASOURCE_PASSWORD=Start#123
+      - SERVICES_PRODUCT_URL=http://store-product-service:8083
+    depends_on:
+      - mysql
+      - store-product-service
+
+  store-order-service:
+    build: ./backend/store-order-service
+    ports:
+      - "8085:8085"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/store_api
+      - SPRING_DATASOURCE_PASSWORD=Start#123
+      - STRIPE_KEY=your_stripe_key
+      - WEBHOOK_SECRET_KEY=your_webhook_secret
+      - SERVICES_CART_URL=http://store-cart-service:8084
+    depends_on:
+      - mysql
+      - store-cart-service
+
+  store-frontend:
+    build: ./frontend
+    ports:
+      - "3000:3000"
+    depends_on:
+      - store-gateway
+
+volumes:
+  mysql_data:
